@@ -1,0 +1,36 @@
+name: Python application
+
+on: [push, pull_request]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.x'
+
+    - name: Install dependencies
+      run: |
+        python -m venv venv
+        source venv/bin/activate
+        pip install -r requirements.txt
+
+    - name: Install Selenium dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y wget unzip
+        wget https://chromedriver.storage.googleapis.com/90.0.4430.24/chromedriver_linux64.zip
+        unzip chromedriver_linux64.zip -d /usr/local/bin/
+        sudo apt-get install -y chromium-browser
+
+    - name: Run tests
+      run: |
+        source venv/bin/activate
+        pytest --html=report.html --self-contained-html
