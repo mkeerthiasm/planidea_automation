@@ -1,5 +1,5 @@
 from selenium.webdriver.common.by import By
-from .base_page.py import BasePage
+from .base_page import BasePage
 
 class LoginPage(BasePage):
     URL = 'https://planidea.netlify.app/login'
